@@ -1,30 +1,4 @@
-﻿class Greeter {
-    element: HTMLElement;
-    span: HTMLElement;
-    timerToken: number;
-
-    constructor(element: HTMLElement) {
-        this.element = element;
-        this.element.innerHTML += "The time is: ";
-        this.span = document.createElement('span');
-        this.element.appendChild(this.span);
-        this.span.innerText = new Date().toUTCString();
-    }
-
-    start() {
-        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
-    }
-
-    stop() {
-        clearTimeout(this.timerToken);
-    }
-
-}
-
-window.onload = () => {
-    var el = document.getElementById('content');
-    var greeter = new Greeter(el);
-    greeter.start();
+﻿window.onload = () => {
     var client = Client.getInstance();
 
 };
@@ -53,6 +27,7 @@ class Client {
     }
 
     constructor(websocket: WebSocket) {
+        var instance = this;
         this.ws = websocket;
         this.ws.onmessage = (event) => {
 
@@ -61,21 +36,21 @@ class Client {
             var envelope = Envelope.fromObject(data);
 
             if (envelope instanceof Envelope) {
-                this._sessionId = envelope.id;
+                instance._sessionId = envelope.id;
             }
 
             var session = Session.fromObject(data);
 
             if (session instanceof Session && session.state) {
-                if (session.state === "negotiating" ){
-                    this._sessionId = session.id;
+                if (session.state === "negotiating") {
+                    instance._sessionId = session.id;
                     var sessionNegotiation = new Session();
-                    sessionNegotiation.id = this._sessionId;
+                    sessionNegotiation.id = instance._sessionId;
                     sessionNegotiation.to = session.from;
                     sessionNegotiation.state = "negotiating";
                     sessionNegotiation.encryption = "none";
                     sessionNegotiation.compression = "none";
-                    this.sendPackage(sessionNegotiation);
+                    instance.sendPackage(sessionNegotiation);
                 } else if (session.state === "authenticating") {
                     alert(event.data);
                 }
@@ -119,9 +94,6 @@ class Client {
         this.sendPackage(jsonString);
         document.getElementById("btnIniciarSessao").disabled = true;
     }
-    nego
-
-
 }
 
 class Envelope {

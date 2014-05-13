@@ -4,31 +4,7 @@
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Greeter = (function () {
-    function Greeter(element) {
-        this.element = element;
-        this.element.innerHTML += "The time is: ";
-        this.span = document.createElement('span');
-        this.element.appendChild(this.span);
-        this.span.innerText = new Date().toUTCString();
-    }
-    Greeter.prototype.start = function () {
-        var _this = this;
-        this.timerToken = setInterval(function () {
-            return _this.span.innerHTML = new Date().toUTCString();
-        }, 500);
-    };
-
-    Greeter.prototype.stop = function () {
-        clearTimeout(this.timerToken);
-    };
-    return Greeter;
-})();
-
 window.onload = function () {
-    var el = document.getElementById('content');
-    var greeter = new Greeter(el);
-    greeter.start();
     var client = Client.getInstance();
 };
 
@@ -63,6 +39,7 @@ var Client = (function () {
             _this.sendPackage(jsonString);
             document.getElementById("btnIniciarSessao").disabled = true;
         };
+        var instance = this;
         this.ws = websocket;
         this.ws.onmessage = function (event) {
             var data = JSON.parse(event.data);
@@ -70,21 +47,21 @@ var Client = (function () {
             var envelope = Envelope.fromObject(data);
 
             if (envelope instanceof Envelope) {
-                _this._sessionId = envelope.id;
+                instance._sessionId = envelope.id;
             }
 
             var session = Session.fromObject(data);
 
             if (session instanceof Session && session.state) {
                 if (session.state === "negotiating") {
-                    _this._sessionId = session.id;
+                    instance._sessionId = session.id;
                     var sessionNegotiation = new Session();
-                    sessionNegotiation.id = _this._sessionId;
+                    sessionNegotiation.id = instance._sessionId;
                     sessionNegotiation.to = session.from;
                     sessionNegotiation.state = "negotiating";
                     sessionNegotiation.encryption = "none";
                     sessionNegotiation.compression = "none";
-                    _this.sendPackage(sessionNegotiation);
+                    instance.sendPackage(sessionNegotiation);
                 } else if (session.state === "authenticating") {
                     alert(event.data);
                 }
