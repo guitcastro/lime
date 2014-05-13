@@ -34,7 +34,11 @@ namespace Lime.Console
                 portNumber = 55321;
             }
 
-            var uri = new Uri(string.Format("net.tcp://{0}:{1}", Dns.GetHostName(), portNumber));
+
+
+            var uri = new Uri(string.Format("ws://{0}:{1}", Dns.GetHostName(), portNumber));
+
+
 
             string option = null;
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Web", "Lime.Web\Lime.Web.csproj", "{7017CC97-1450-4851-A39A-B4A611BC2AA0}"
 EndProject
@@ -40,6 +40,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{073E3A
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Client.Windows", "Lime.Client.Windows\Lime.Client.Windows.csproj", "{1847098B-FE9E-4E40-AA69-9E70FAF5D06E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Console", "Lime.Console\Lime.Console.csproj", "{9CE8A3B9-5900-4D8B-81A6-C33513553E97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Protocol.SignalR.UnitTests", "Lime.Protocol.SignalR.UnitTests\Lime.Protocol.SignalR.UnitTests.csproj", "{953914EB-211D-4BC8-B4A5-FF1E9FA9A17F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Protocol.WebSocket", "Lime.Protocol.WebSocket\Lime.Protocol.WebSocket.csproj", "{222EDC4B-1F96-491F-BCFF-76038CFD6418}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lime.Protocol.WebSocket.Js", "Lime.Protocol.WebSocket.Js\Lime.Protocol.WebSocket.Js.csproj", "{AF1C00C7-7D78-4AD3-8759-DB9BDBF2BBC9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebSocket", "WebSocket", "{AD1597CC-18BE-422A-92B2-3445190F497F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vtortola.WebSockets", "..\..\WebSocketListener\WebSocketListener\vtortola.WebSockets\vtortola.WebSockets.csproj", "{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vtortola.WebSockets.Deflate", "..\..\WebSocketListener\WebSocketListener\vtortola.WebSockets.Deflate\vtortola.WebSockets.Deflate.csproj", "{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vtortola.WebSockets.Rfc6455", "..\..\WebSocketListener\WebSocketListener\vtortola.WebSockets.Rfc6455\vtortola.WebSockets.Rfc6455.csproj", "{72114F0D-EC56-43D5-8C13-43FB013C0C1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,14 +107,45 @@ Global
 		{1847098B-FE9E-4E40-AA69-9E70FAF5D06E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1847098B-FE9E-4E40-AA69-9E70FAF5D06E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1847098B-FE9E-4E40-AA69-9E70FAF5D06E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CE8A3B9-5900-4D8B-81A6-C33513553E97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE8A3B9-5900-4D8B-81A6-C33513553E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE8A3B9-5900-4D8B-81A6-C33513553E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE8A3B9-5900-4D8B-81A6-C33513553E97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{953914EB-211D-4BC8-B4A5-FF1E9FA9A17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{953914EB-211D-4BC8-B4A5-FF1E9FA9A17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{953914EB-211D-4BC8-B4A5-FF1E9FA9A17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{953914EB-211D-4BC8-B4A5-FF1E9FA9A17F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{222EDC4B-1F96-491F-BCFF-76038CFD6418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{222EDC4B-1F96-491F-BCFF-76038CFD6418}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{222EDC4B-1F96-491F-BCFF-76038CFD6418}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{222EDC4B-1F96-491F-BCFF-76038CFD6418}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF1C00C7-7D78-4AD3-8759-DB9BDBF2BBC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1C00C7-7D78-4AD3-8759-DB9BDBF2BBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF1C00C7-7D78-4AD3-8759-DB9BDBF2BBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF1C00C7-7D78-4AD3-8759-DB9BDBF2BBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72114F0D-EC56-43D5-8C13-43FB013C0C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72114F0D-EC56-43D5-8C13-43FB013C0C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72114F0D-EC56-43D5-8C13-43FB013C0C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72114F0D-EC56-43D5-8C13-43FB013C0C1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{0BD5D84E-79C4-415F-A668-F57B5AF555FD} = {AFDCE25A-4480-4ED6-8C8F-A41E30ED6689}
 		{07EF6707-B284-4068-9B2F-48998782BC9F} = {AFDCE25A-4480-4ED6-8C8F-A41E30ED6689}
 		{C51D26F4-E780-4BDE-84FC-AADC6AE63D5B} = {AFDCE25A-4480-4ED6-8C8F-A41E30ED6689}
 		{65AF3FF1-3410-4F12-B798-206CE673BAD1} = {AFDCE25A-4480-4ED6-8C8F-A41E30ED6689}
-		{0BD5D84E-79C4-415F-A668-F57B5AF555FD} = {AFDCE25A-4480-4ED6-8C8F-A41E30ED6689}
+		{1BD8E3C1-EF7D-4D58-89E2-33E5EC7C9406} = {AD1597CC-18BE-422A-92B2-3445190F497F}
+		{3BFDAE73-A6A9-40B9-9026-84DD005BBAC9} = {AD1597CC-18BE-422A-92B2-3445190F497F}
+		{72114F0D-EC56-43D5-8C13-43FB013C0C1D} = {AD1597CC-18BE-422A-92B2-3445190F497F}
 	EndGlobalSection
 EndGlobal

@@ -13,6 +13,7 @@ using Lime.Protocol.Network;
 using System.Text;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Shouldly;
 
 namespace Lime.Protocol.Tcp.UnitTests
 {
@@ -574,8 +575,8 @@ namespace Lime.Protocol.Tcp.UnitTests
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is InvalidOperationException);
-                Assert.IsTrue(stream.CloseInvoked);
+                ex.ShouldBeOfType<InvalidOperationException>();
+                stream.CloseInvoked.ShouldBe(true);
             }
 
         }
@@ -596,7 +597,7 @@ namespace Lime.Protocol.Tcp.UnitTests
 
             var bufferPartSize = messageBuffer.Length / bufferParts;
 
-            byte[][] messageBufferParts = new byte[bufferParts][];
+            var messageBufferParts = new byte[bufferParts][];
 
             for (int i = 0; i < bufferParts; i++)
             {
@@ -633,8 +634,8 @@ namespace Lime.Protocol.Tcp.UnitTests
             }
             catch (Exception ex)
             {
-                Assert.IsTrue(ex is InvalidOperationException);
-                Assert.IsTrue(stream.CloseInvoked);
+                ex.ShouldBeOfType<InvalidOperationException>();
+                stream.CloseInvoked.ShouldBe(true);
             }
             
         }

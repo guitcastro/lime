@@ -25,7 +25,6 @@ namespace Lime.Protocol.Tcp
     /// </summary>
     public class TcpTransport : TransportBase, ITransport
     {
-        public const int DEFAULT_BUFFER_SIZE = 8192;
 
         #region Private fields
 
@@ -102,6 +101,7 @@ namespace Lime.Protocol.Tcp
         }
 
         private TcpTransport(ITcpClient tcpClient, IEnvelopeSerializer envelopeSerializer, X509Certificate2 serverCertificate, string hostName, int bufferSize, ITraceWriter traceWriter)
+            : base(bufferSize)
         {
             if (tcpClient == null)
             {
@@ -109,9 +109,6 @@ namespace Lime.Protocol.Tcp
             }
 
             _tcpClient = tcpClient;
-
-            _buffer = new byte[bufferSize];
-            _bufferCurPos = 0;
 
             if (envelopeSerializer == null)
             {
@@ -406,108 +403,5 @@ namespace Lime.Protocol.Tcp
 
         #endregion
 
-        #region Private methods
-
-        private static bool ValidateServerCertificate(
-              object sender,
-              X509Certificate certificate,
-              X509Chain chain,
-              SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
-        private static X509Certificate SelectLocalCertificate(
-            object sender, 
-            string targetHost, 
-            X509CertificateCollection localCertificates, 
-            X509Certificate remoteCertificate, 
-            string[] acceptableIssuers)
-        {
-            if (localCertificates.Count > 0)
-            {
-                return localCertificates[0];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        #region Buffer fields
-
-        private byte[] _buffer;
-        private int _bufferCurPos;
-        
-        private int _jsonStartPos;
-        private int _jsonCurPos;
-        private int _jsonStackedBrackets;
-        private bool _jsonStarted = false;
-
-        #endregion
-
-        /// <summary>
-        /// Try to extract a JSON document
-        /// from the buffer, based on the 
-        /// brackets count.
-        /// </summary>
-        /// <param name="json"></param>
-        /// <returns></returns>
-        private bool TryExtractJsonFromBuffer(out byte[] json)
-        {
-            if (_bufferCurPos > _buffer.Length)
-            {
-                throw new ArgumentException("Buffer current pos or length value is invalid");
-            }
-
-            json = null;
-            int jsonLenght = 0;
-
-            for (int i = _jsonCurPos; i < _bufferCurPos; i++)
-            {
-                _jsonCurPos = i + 1;
-
-                if (_buffer[i] == '{')
-                {
-                    _jsonStackedBrackets++;
-                    if (!_jsonStarted)
-                    {
-                        _jsonStartPos = i;
-                        _jsonStarted = true;
-                    }
-                }
-                else if (_buffer[i] == '}')
-                {
-                    _jsonStackedBrackets--;
-                }
-
-                if (_jsonStarted &&
-                    _jsonStackedBrackets == 0)
-                {
-                    jsonLenght = i - _jsonStartPos + 1;
-                    break;
-                }
-            }
-
-            if (jsonLenght > 1)
-            {
-                json = new byte[jsonLenght];
-                Array.Copy(_buffer, _jsonStartPos, json, 0, jsonLenght);
-
-                // Shifts the buffer to the left
-                _bufferCurPos -= (jsonLenght + _jsonStartPos);
-                Array.Copy(_buffer, jsonLenght + _jsonStartPos, _buffer, 0, _bufferCurPos);
-
-                _jsonCurPos = 0;
-                _jsonStartPos = 0;
-                _jsonStarted = false;
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion        
     }
 }

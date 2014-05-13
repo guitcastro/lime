@@ -79,6 +79,10 @@ namespace Lime.Protocol.Serialization
 
             if (base.ContainsKey(key))
             {
+                if (base[key] == null)
+                {
+                    return array;
+                }
                 var list = base[key] as IList;
 
                 if (list == null)
@@ -105,6 +109,8 @@ namespace Lime.Protocol.Serialization
 
             if (base.ContainsKey(key))
             {
+                if (base[key] == null)
+                    return value;
                 value = TypeUtil.GetEnumValue(enumType, (string)base[key]);
             }
 

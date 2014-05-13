@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>TypeScript HTML App</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>TypeScript HTML App</h1>
+
+    <div id="content"></div>
+    <div id="session">
+        <button id="btnIniciarSessao" onclick="Client.getInstance().startSession()">Iniciar Sessao</button>
+    </div>
+    
+    <div id="testmessage">
+        <textarea id="txtMessage" ></textarea>
+        <button onclick="sendData(document.getElementById('txtMessage').value, Client.getInstance())" value="Enviar">Enviar</button>
+    </div>
+</body>
+</html>

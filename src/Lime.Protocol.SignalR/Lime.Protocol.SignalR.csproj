@@ -4,19 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9CE8A3B9-5900-4D8B-81A6-C33513553E97}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{0C84C943-33D7-4600-9E24-4E56D7679E4C}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lime.Console</RootNamespace>
-    <AssemblyName>Lime.Console</AssemblyName>
+    <RootNamespace>Lime.Protocol.SignalR</RootNamespace>
+    <AssemblyName>Lime.Protocol.SignalR</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -26,7 +24,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -34,15 +31,30 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Client">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.0.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\packages\Microsoft.Owin.2.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security">
+      <HintPath>..\packages\Microsoft.Owin.Security.2.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.14.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.14\lib\portable-net45+win8\System.Threading.Tasks.Dataflow.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.20\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,37 +63,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleClient.cs" />
-    <Compile Include="ConsoleServer.cs" />
-    <Compile Include="DebugTraceWriter.cs" />
-    <Compile Include="FileTraceWriter.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ISignalRClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueueBenchmark.cs" />
-    <Compile Include="SerializerBenchmark.cs" />
+    <Compile Include="SignalRTransport.cs" />
+    <Compile Include="SignalRTransportListener.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lime.Protocol.Serialization.Newtonsoft\Lime.Protocol.Serialization.Newtonsoft.csproj">
-      <Project>{07ef6707-b284-4068-9b2f-48998782bc9f}</Project>
-      <Name>Lime.Protocol.Serialization.Newtonsoft</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Lime.Protocol.Serialization.ServiceStack\Lime.Protocol.Serialization.ServiceStack.csproj">
-      <Project>{0bd5d84e-79c4-415f-a668-f57b5af555fd}</Project>
-      <Name>Lime.Protocol.Serialization.ServiceStack</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Lime.Protocol.Tcp\Lime.Protocol.Tcp.csproj">
-      <Project>{0ee0db06-832f-4d33-96a8-0d2703af27a9}</Project>
-      <Name>Lime.Protocol.Tcp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Lime.Protocol.WebSocket\Lime.Protocol.WebSocket.csproj">
-      <Project>{222EDC4B-1F96-491F-BCFF-76038CFD6418}</Project>
-      <Name>Lime.Protocol.WebSocket</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol.csproj">
       <Project>{bd98c983-6dad-4eb6-b728-4619c7aca6e9}</Project>
       <Name>Lime.Protocol</Name>

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
@@ -13,11 +15,24 @@ namespace Lime.Protocol.Network
     /// </summary>
     public abstract class TransportBase : ITransport
     {
+        #region Constants
+        public const int DEFAULT_BUFFER_SIZE = 8192;
+        #endregion
+
         #region Private fields
 
         private bool _closingInvoked;
         private bool _closedInvoked;
 
+        #endregion
+
+        #region Constructor
+
+        public TransportBase(int buffersize = DEFAULT_BUFFER_SIZE)
+        {
+            _buffer = new byte[buffersize];
+            _bufferCurPos = 0;
+        }
         #endregion
 
         #region ITransport Members
@@ -181,5 +196,108 @@ namespace Lime.Protocol.Network
                 this.Closed.RaiseEvent(this, EventArgs.Empty);
             }
         }
+
+
+        #region Private methods
+
+        protected static bool ValidateServerCertificate(
+              object sender,
+              X509Certificate certificate,
+              X509Chain chain,
+              SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
+        protected static X509Certificate SelectLocalCertificate(
+            object sender,
+            string targetHost,
+            X509CertificateCollection localCertificates,
+            X509Certificate remoteCertificate,
+            string[] acceptableIssuers)
+        {
+            if (localCertificates.Count > 0)
+            {
+                return localCertificates[0];
+            }
+            return null;
+        }
+
+        #region Buffer fields
+
+        protected byte[] _buffer;
+        protected int _bufferCurPos;
+
+        protected int _jsonStartPos;
+        protected int _jsonCurPos;
+        protected int _jsonStackedBrackets;
+        protected bool _jsonStarted = false;
+
+        #endregion
+
+        /// <summary>
+        /// Try to extract a JSON document
+        /// from the buffer, based on the 
+        /// brackets count.
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
+        protected bool TryExtractJsonFromBuffer(out byte[] json)
+        {
+            if (_bufferCurPos > _buffer.Length)
+            {
+                throw new ArgumentException("Buffer current pos or length value is invalid");
+            }
+
+            json = null;
+            int jsonLenght = 0;
+
+            for (int i = _jsonCurPos; i < _bufferCurPos; i++)
+            {
+                _jsonCurPos = i + 1;
+
+                if (_buffer[i] == '{')
+                {
+                    _jsonStackedBrackets++;
+                    if (!_jsonStarted)
+                    {
+                        _jsonStartPos = i;
+                        _jsonStarted = true;
+                    }
+                }
+                else if (_buffer[i] == '}')
+                {
+                    _jsonStackedBrackets--;
+                }
+
+                if (_jsonStarted &&
+                    _jsonStackedBrackets == 0)
+                {
+                    jsonLenght = i - _jsonStartPos + 1;
+                    break;
+                }
+            }
+
+            if (jsonLenght > 1)
+            {
+                json = new byte[jsonLenght];
+                Array.Copy(_buffer, _jsonStartPos, json, 0, jsonLenght);
+
+                // Shifts the buffer to the left
+                _bufferCurPos -= (jsonLenght + _jsonStartPos);
+                Array.Copy(_buffer, jsonLenght + _jsonStartPos, _buffer, 0, _bufferCurPos);
+
+                _jsonCurPos = 0;
+                _jsonStartPos = 0;
+                _jsonStarted = false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion        
+
     }
 }
