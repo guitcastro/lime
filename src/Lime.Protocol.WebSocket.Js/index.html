@@ -5,30 +5,49 @@
     <meta charset="utf-8" />
     <title>TypeScript HTML App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
-    <script src="limeClient.ts"></script>
+    <link rel="stylesheet" href="Content/bootstrap.min.css" type="text/css"/>
+    <link rel="stylesheet" href="Content/bootstrap-theme.min.css" type="text/css"/>
+    <script src="Scripts/knockout-3.1.0.js"></script>
+    <script src="Scripts/Lime.Protocol.Model.js"></script>
+    <script src="Scripts/Lime.Protocol.Client.js"></script>
+    <script src="app.js"></script>
 </head>
 <body>
-    <h1>TypeScript HTML App</h1>
+    <h1>Lime chat App</h1>
+    
+    <!-- ko-vs-editor viewModel: Chat.ChatViewModel -->
+    <div id="container">
+        <input type="text" placeholder="Usuario" data-bind="value: user" id="user" />
+        <input type="password" placeholder="Senha" data-bind="value: password" id="password"/>
+        <input type="text" placeholder="Servidor" data-bind="value: server" disabled id="server" />
+        <button data-bind="click: login">Entrar</button>
 
-    <div id="content">
-        <input type="text" id="identity" value="ww@bb.com" placeholder="Usuario" />
-        <input type="password" id="password" value="123456" placeholder="Senha" />
-    </div>
-    <div id="session">
-        <button id="btnIniciarSessao" onclick=" LimeClient.getInstance().startSession(document.getElementById('identity').value, document.getElementById('password').value)">Iniciar Sessao</button>
-    </div>
-    
-    <div id="lastMessageReceived">
-        <h3>Last message Sent content</h3>
-        <code id="lastMessageReceivedContent"></code>
-    </div>
-    <div id="lastMessageSent">
-        <h3>Last message Sent content</h3>
-        <code id="lastMessageSentContent"></code>
-    </div>
-    
-    <div id="chat">
+        <textarea data-bind="value: textMessage" placeholder="Nova Menssagem"></textarea>
+        <input type="text" placeholder="Para:" data-bind="value : messageDestination" />
+        <button data-bind="click: sendMessage">Enviar Menssagem</button>
+        <button data-bind="click: logout">Sair</button>
         
+
+        <ul data-bind="foreach: messages">
+            <li>
+                From: <span data-bind="text: from"></span>
+                <p>
+                    <span data-bind="text: content.text"></span>
+                </p>
+            </li>
+        </ul>
+        
+        <p>Avaliability status:<span data-bind="text: avaliabilityStatus"></span></p>
     </div>
+    <!-- /ko-vs-editor -->
+    
+    <input type="hidden" id="serverUrl" value="ws://cake.takenet.com.br:55321/" />
+    <script type="text/javascript">
+            var vm = new Chat.ChatViewModel(document.getElementById('serverUrl').value);
+            ko.applyBindings(vm, document.getElementById('container'));
+            vm.server('bb.com');
+            vm.user('ww');
+            vm.password('123456');
+    </script>
 </body>
 </html>
