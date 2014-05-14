@@ -33,7 +33,7 @@ module Chat {
             message.content = new LM.Content();
             message.content.text = this.textMessage();
             message.to = this.messageDestination();
-            message.type = 'application/vnd.iris.text+json';
+            message.type = 'application/vnd.lime.text+json';
             this.messages.push(message);
             this.client.sendMessage(message);
         }

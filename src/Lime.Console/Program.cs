@@ -75,10 +75,10 @@ namespace Lime.Console
                 Identity identity;
 
                 while (!Identity.TryParse(identityInput, out identity))
-	            {
-	                System.Console.Write("Enter the identity (name@domain): ");
+                {
+                    System.Console.Write("Enter the identity (name@domain): ");
                     identityInput = System.Console.ReadLine();
-	            }
+                }
                 
                 System.Console.Write("Enter the password: ");
                 var password = System.Console.ReadLine();

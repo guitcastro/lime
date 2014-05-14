@@ -27,7 +27,7 @@
                 message.content = new LM.Content();
                 message.content.text = _this.textMessage();
                 message.to = _this.messageDestination();
-                message.type = 'application/vnd.iris.text+json';
+                message.type = 'application/vnd.lime.text+json';
                 _this.messages.push(message);
                 _this.client.sendMessage(message);
             };

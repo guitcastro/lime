@@ -1,6 +1,7 @@
 ﻿using Lime.Protocol;
 using Lime.Protocol.Network;
 using Lime.Protocol.Serialization;
+using Lime.Protocol.Serialization.ServiceStack;
 using Lime.Protocol.Server;
 using Lime.Protocol.Tcp;
 using System;
@@ -248,7 +249,7 @@ namespace Lime.Console
                         Event = Event.Failed,
                         Reason = new Reason()
                         {
-                            Code = ReasonCodes.VALIDATION_INVALID_DESTINATION,
+                            Code = ReasonCodes.VALIDATION_ERROR,
                             Description = "Invalid destination"
                         }
                     };
