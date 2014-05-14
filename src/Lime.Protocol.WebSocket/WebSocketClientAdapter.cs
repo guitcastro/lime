@@ -30,7 +30,7 @@ namespace Lime.Protocol.WebSocket
             return _webSocket.ReadMessageAsync(cancellationToken);
         }
 
-        public Stream GetWriteStream()
+        public WebSocketMessageWriteStream GetWriteStream()
         {
             _writerStream = _webSocket.CreateMessageWriter(WebSocketMessageType.Text);
             return _writerStream;

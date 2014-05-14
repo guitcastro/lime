@@ -19,7 +19,7 @@ namespace Lime.Protocol.WebSocket
         /// Returns the stream used to send data.
         /// </summary>
         /// <returns></returns>
-        Stream GetWriteStream();
+        WebSocketMessageWriteStream GetWriteStream();
 
         /// <summary>
         /// Gets a value indicating whether the underlying System.Net.Sockets.Socket

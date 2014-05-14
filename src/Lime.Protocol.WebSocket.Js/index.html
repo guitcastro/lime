@@ -5,19 +5,30 @@
     <meta charset="utf-8" />
     <title>TypeScript HTML App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
-    <script src="app.js"></script>
+    <script src="limeClient.ts"></script>
 </head>
 <body>
     <h1>TypeScript HTML App</h1>
 
-    <div id="content"></div>
+    <div id="content">
+        <input type="text" id="identity" value="ww@bb.com" placeholder="Usuario" />
+        <input type="password" id="password" value="123456" placeholder="Senha" />
+    </div>
     <div id="session">
-        <button id="btnIniciarSessao" onclick="Client.getInstance().startSession()">Iniciar Sessao</button>
+        <button id="btnIniciarSessao" onclick=" LimeClient.getInstance().startSession(document.getElementById('identity').value, document.getElementById('password').value)">Iniciar Sessao</button>
     </div>
     
-    <div id="testmessage">
-        <textarea id="txtMessage" ></textarea>
-        <button onclick="sendData(document.getElementById('txtMessage').value, Client.getInstance())" value="Enviar">Enviar</button>
+    <div id="lastMessageReceived">
+        <h3>Last message Sent content</h3>
+        <code id="lastMessageReceivedContent"></code>
+    </div>
+    <div id="lastMessageSent">
+        <h3>Last message Sent content</h3>
+        <code id="lastMessageSentContent"></code>
+    </div>
+    
+    <div id="chat">
+        
     </div>
 </body>
 </html>

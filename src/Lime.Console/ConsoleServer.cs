@@ -182,6 +182,10 @@ namespace Lime.Console
                             instanceSessionDictionary = new Dictionary<string, Guid>();
                             _identityInstanceSessionIdDictionary.Add(authenticatedSession.From.ToIdentity(), instanceSessionDictionary);
                         }
+                        if (string.IsNullOrWhiteSpace(authenticatedSession.From.Instance))
+                        {
+                            authenticatedSession.From.Instance = "default";
+                        }
 
                         instanceSessionDictionary.Add(authenticatedSession.From.Instance, channel.SessionId);
 

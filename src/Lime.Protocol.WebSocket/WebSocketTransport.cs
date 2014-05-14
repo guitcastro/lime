@@ -57,6 +57,7 @@ namespace Lime.Protocol.WebSocket
                 using (var writeStream = _webSocketClient.GetWriteStream())
                 {
                     await writeStream.WriteAsync(jsonBytes, 0, jsonBytes.Length, cancellationToken).ConfigureAwait(false);
+                    await writeStream.CloseAsync(cancellationToken).ConfigureAwait(false);
                 }
             }
             finally
