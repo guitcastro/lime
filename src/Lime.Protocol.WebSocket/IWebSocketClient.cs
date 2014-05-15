@@ -35,11 +35,5 @@ namespace Lime.Protocol.WebSocket
         /// underlying TCP connection be closed.
         /// </summary>
         void Close();
-
-
-        /// <summary>
-        /// Flushes the write stream on underline connection.
-        /// </summary>
-        void FlushWriteStream();
     }
 }

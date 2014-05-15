@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Lime.Protocol.SignalR.UnitTests")]
+[assembly: AssemblyTitle("Lime.Protocol.WebSocket.UnitTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Lime.Protocol.SignalR.UnitTests")]
+[assembly: AssemblyProduct("Lime.Protocol.WebSocket.UnitTests")]
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("6eb594d6-5e04-429a-a00d-6824a2e72382")]
+[assembly: Guid("2c28d766-caec-4d94-81b6-0f2a77f21002")]
 
 // Version information for an assembly consists of the following four values:
 //

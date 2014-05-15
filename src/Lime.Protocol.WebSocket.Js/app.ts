@@ -38,13 +38,13 @@ module Chat {
         }
 
         login = () => {
-            
             this.client.changedSessionState = this.stateChanged;
             this.client.receiveMessage = this.receiveMessage;
             this.client.receiveNotification = this.receiveNotification;
             this.client.receiveCommand = this.receiveCommand;
             this.client.startSession(this.identity(), this.password());
         }
+
         logout = () => {
             this.client.endSession();
         } 

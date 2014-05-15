@@ -23,8 +23,18 @@ namespace Lime.Protocol.WebSocket
         public WebSocketTransport(IWebSocketClient webSocketClient, IEnvelopeSerializer envelopeSerializer,
             ITraceWriter traceWriter)
         {
+            if (webSocketClient == null)
+            {
+                throw new ArgumentException("Should contain a websocket","webSocketClient");
+            }
             _webSocketClient = webSocketClient;
+
+            if (envelopeSerializer == null)
+            {
+                throw new ArgumentException("Should contain a envelop serializer", "envelopeSerializer");
+            }
             _envelopeSerializer = envelopeSerializer;
+
             _traceWriter = traceWriter;
 
             _receiveSemaphore = new SemaphoreSlim(1);
@@ -64,7 +74,6 @@ namespace Lime.Protocol.WebSocket
             {
                 _sendSemaphore.Release();
             }
-
 
         }
 

@@ -13,7 +13,6 @@ namespace Lime.Protocol.WebSocket
     internal class WebSocketClientAdapter : IWebSocketClient
     {
         private readonly vtortola.WebSockets.WebSocket _webSocket;
-        private WebSocketMessageWriteStream _writerStream;
 
         internal WebSocketClientAdapter(vtortola.WebSockets.WebSocket webSocket)
         {
@@ -32,8 +31,7 @@ namespace Lime.Protocol.WebSocket
 
         public WebSocketMessageWriteStream GetWriteStream()
         {
-            _writerStream = _webSocket.CreateMessageWriter(WebSocketMessageType.Text);
-            return _writerStream;
+            return _webSocket.CreateMessageWriter(WebSocketMessageType.Text);
         }
 
         public bool Connected
@@ -44,14 +42,6 @@ namespace Lime.Protocol.WebSocket
         public void Close()
         {
             _webSocket.Close();
-        }
-
-        public void FlushWriteStream()
-        {
-            if (_writerStream != null)
-            {
-                _writerStream.Flush();
-            }
         }
     }
 }
