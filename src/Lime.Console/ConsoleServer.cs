@@ -249,7 +249,7 @@ namespace Lime.Console
                         Event = Event.Failed,
                         Reason = new Reason()
                         {
-                            Code = ReasonCodes.VALIDATION_ERROR,
+                            Code = ReasonCodes.VALIDATION_INVALID_RECIPIENTS,
                             Description = "Invalid destination"
                         }
                     };
