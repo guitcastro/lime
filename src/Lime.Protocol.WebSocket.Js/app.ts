@@ -30,8 +30,7 @@ module Chat {
 
         sendMessage = () => {
             var message = new LM.Message(this.identity());
-            message.content = new LM.Content();
-            message.content.text = this.textMessage();
+            message.content = new LM.Content(this.textMessage());
             message.to = this.messageDestination();
             message.type = 'application/vnd.lime.text+json';
             this.messages.push(message);

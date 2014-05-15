@@ -24,8 +24,7 @@
             this.avaliabilityStatus = ko.observable(0 /* Unavaliable */);
             this.sendMessage = function () {
                 var message = new LM.Message(_this.identity());
-                message.content = new LM.Content();
-                message.content.text = _this.textMessage();
+                message.content = new LM.Content(_this.textMessage());
                 message.to = _this.messageDestination();
                 message.type = 'application/vnd.lime.text+json';
                 _this.messages.push(message);

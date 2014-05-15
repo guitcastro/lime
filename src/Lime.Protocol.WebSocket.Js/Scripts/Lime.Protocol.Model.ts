@@ -33,13 +33,15 @@ module Lime.Protocol.Model {
             super(from, to, id);
         }
 
-        static fromObject(object: any) {
+        static fromObject(object: any): Notification {
+
+            var reason = Reason.fromObject(object.reason);
             return new Notification(
                 object.from,
                 object.to,
                 object.id,
                 object.event,
-                object.reason
+                reason
                 );
         }
     }
@@ -54,14 +56,18 @@ module Lime.Protocol.Model {
             super(from, to, id);
         }
 
-        static fromObject(object: any) {
-            return new Message(
-                object.from,
-                object.to,
-                object.id,
-                object.Content,
-                object.type
-                );
+        static fromObject(object: any): Message{
+            if (object) {
+                var content: Content = Content.fromObject(object.content);
+                return new Message(
+                    object.from,
+                    object.to,
+                    object.id,
+                    content,
+                    object.type
+                    );
+            }
+            return null;
         }
     }
 
@@ -79,17 +85,21 @@ module Lime.Protocol.Model {
             super(from, to, id);
         }
 
-        static fromObject(object: any) {
-            return new Command(
-                object.from,
-                object.to,
-                object.id,
-                object.method,
-                object.type,
-                object.resource,
-                object.status,
-                object.reason
-                );
+        static fromObject(object: any): Command {
+            if (object) {
+                var reason = Reason.fromObject(object.reason);
+                return new Command(
+                    object.from,
+                    object.to,
+                    object.id,
+                    object.method,
+                    object.type,
+                    object.resource,
+                    object.status,
+                    reason
+                    );
+            }
+            return null;
         }
     }
 
@@ -112,27 +122,37 @@ module Lime.Protocol.Model {
             ) {
             super(from, to, id);
         }
-        static fromObject(object: any) {
-            return new Session(
-                object.from,
-                object.to,
-                object.id,
-                object.state,
-                object.mode,
-                object.encryptionOptions,
-                object.compressionOptions,
-                object.compression,
-                object.encryption,
-                object.schemeOptions,
-                object.scheme,
-                object.authentication,
-                object.reason
-                );
+        static fromObject(object: any) : Session {
+            if (object) {
+                var authentication = Authentication.fromObject(object.authentication);
+                var reason = Reason.fromObject(object.reason);
+                return new Session(
+                    object.from,
+                    object.to,
+                    object.id,
+                    object.state,
+                    object.mode,
+                    object.encryptionOptions,
+                    object.compressionOptions,
+                    object.compression,
+                    object.encryption,
+                    object.schemeOptions,
+                    object.scheme,
+                    authentication,
+                    reason
+                    );
+            }
+            return null;
         }
     }
 
     export class Authentication {
-
+        static fromObject(object: any): Authentication {
+            if (object) {
+                return new Authentication();
+            }
+            return null;
+        }
     }
 
     export class PlainAuthentication extends Authentication {
@@ -144,11 +164,28 @@ module Lime.Protocol.Model {
     }
 
     export class Reason {
-        code: number;
-        description: string;
+
+        constructor(public code: number, public description: string) {
+            
+        }
+        
+        static fromObject(object: any) : Reason {
+            if (object) {
+                return new Reason(object.code, object.description);
+            }
+            return null;
+        }
     }
 
     export class Content {
-        text: string;
+        constructor(public text: string) {
+            
+        }
+        static fromObject(object: any): Content {
+            if (object) {
+                return new Content(object.text);
+            }
+            return null;
+        }
     }
 }

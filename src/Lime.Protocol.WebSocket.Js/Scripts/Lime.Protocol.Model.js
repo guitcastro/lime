@@ -54,7 +54,8 @@ var Lime;
                     this.reason = reason;
                 }
                 Notification.fromObject = function (object) {
-                    return new Notification(object.from, object.to, object.id, object.event, object.reason);
+                    var reason = Reason.fromObject(object.reason);
+                    return new Notification(object.from, object.to, object.id, object.event, reason);
                 };
                 return Notification;
             })(Envelope);
@@ -76,7 +77,11 @@ var Lime;
                     this.type = type;
                 }
                 Message.fromObject = function (object) {
-                    return new Message(object.from, object.to, object.id, object.Content, object.type);
+                    if (object) {
+                        var content = Content.fromObject(object.content);
+                        return new Message(object.from, object.to, object.id, content, object.type);
+                    }
+                    return null;
                 };
                 return Message;
             })(Envelope);
@@ -104,7 +109,11 @@ var Lime;
                     this.reason = reason;
                 }
                 Command.fromObject = function (object) {
-                    return new Command(object.from, object.to, object.id, object.method, object.type, object.resource, object.status, object.reason);
+                    if (object) {
+                        var reason = Reason.fromObject(object.reason);
+                        return new Command(object.from, object.to, object.id, object.method, object.type, object.resource, object.status, reason);
+                    }
+                    return null;
                 };
                 return Command;
             })(Envelope);
@@ -142,7 +151,12 @@ var Lime;
                     this.reason = reason;
                 }
                 Session.fromObject = function (object) {
-                    return new Session(object.from, object.to, object.id, object.state, object.mode, object.encryptionOptions, object.compressionOptions, object.compression, object.encryption, object.schemeOptions, object.scheme, object.authentication, object.reason);
+                    if (object) {
+                        var authentication = Authentication.fromObject(object.authentication);
+                        var reason = Reason.fromObject(object.reason);
+                        return new Session(object.from, object.to, object.id, object.state, object.mode, object.encryptionOptions, object.compressionOptions, object.compression, object.encryption, object.schemeOptions, object.scheme, authentication, reason);
+                    }
+                    return null;
                 };
                 return Session;
             })(Envelope);
@@ -151,6 +165,12 @@ var Lime;
             var Authentication = (function () {
                 function Authentication() {
                 }
+                Authentication.fromObject = function (object) {
+                    if (object) {
+                        return new Authentication();
+                    }
+                    return null;
+                };
                 return Authentication;
             })();
             Model.Authentication = Authentication;
@@ -166,15 +186,30 @@ var Lime;
             Model.PlainAuthentication = PlainAuthentication;
 
             var Reason = (function () {
-                function Reason() {
+                function Reason(code, description) {
+                    this.code = code;
+                    this.description = description;
                 }
+                Reason.fromObject = function (object) {
+                    if (object) {
+                        return new Reason(object.code, object.description);
+                    }
+                    return null;
+                };
                 return Reason;
             })();
             Model.Reason = Reason;
 
             var Content = (function () {
-                function Content() {
+                function Content(text) {
+                    this.text = text;
                 }
+                Content.fromObject = function (object) {
+                    if (object) {
+                        return new Content(object.text);
+                    }
+                    return null;
+                };
                 return Content;
             })();
             Model.Content = Content;
