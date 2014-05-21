@@ -89,6 +89,10 @@ namespace Lime.Protocol.WebSocket
             });
             var rfc6455 = new vtortola.WebSockets.Rfc6455.WebSocketFactoryRfc6455(_webSocketListener);
             _webSocketListener.Standards.RegisterStandard(rfc6455);
+            if (_sslCertificate != null)
+            {
+                _webSocketListener.ConnectionExtensions.RegisterExtension(new WebSocketSecureConnectionExtension(_sslCertificate));
+            }
             _webSocketListener.Start();
         }
 

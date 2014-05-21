@@ -66,7 +66,7 @@ namespace Lime.Console
             store.Open(OpenFlags.ReadOnly);
 
             //var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, "f864d23e92894c56df566b7ab7a9c6411d50d14d", false);
-            var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, "22f72161d81d109d440ead55baabccd8e0be8ecf", false);
+            var certificates = store.Certificates.Find(X509FindType.FindByThumbprint, "443af70f0403c8932367311ec0350e9bb50c35da", false);
             
             if (certificates.Count == 0)
             {
@@ -79,10 +79,10 @@ namespace Lime.Console
 #else
             ITraceWriter traceWriter = new FileTraceWriter("server.log"); 
 #endif
-
+            //TODO: Include a listener
             _listener = new WebSocketTransportListener(
                 _listenerUri,
-                certificates[0],
+                null,
                 new EnvelopeSerializer(),
                 traceWriter
                 );
