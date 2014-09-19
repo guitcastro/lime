@@ -54,6 +54,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\Lime.Protocol\Lime.Protocol.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol\Lime.Protocol.projitems')" />
+  <Import Project="..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems" Label="Shared" Condition="Exists('..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

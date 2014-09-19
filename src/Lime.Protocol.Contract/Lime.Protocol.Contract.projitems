@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>2570c9ef-3625-490b-8738-4d44dc20c461</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Lime.Protocol.Contract</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contents\ChatState.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contents\PlainText.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Document.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Envelope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Identity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IIdentity.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JsonDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LimeUri.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MediaType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Message.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\DeferralEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\IChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\ICommandChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\IEnvelopeContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\IMessageChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\INotificationChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\ISessionChannel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\ITraceWriter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\ITransport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Network\LimeException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Node.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Notification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PlainDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Reason.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ReasonCodes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Account.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Capability.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Contact.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Delegation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Group.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Ping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Presence.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Quota.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Receipt.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\Subscription.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Resources\UriTemplates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\Authentication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\GuestAuthentication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\IAuthenticatableTransport.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\PlainAuthentication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Security\TransportAuthentication.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\IEnvelopeSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Serialization\SerializationExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Session.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\AsyncCountdownEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util\DeferralManager.cs" />
+  </ItemGroup>
+</Project>
