@@ -24,7 +24,7 @@ namespace Lime.Protocol.Serialization
         private static IDictionary<AuthenticationScheme, Type> _authenticationSchemeDictionary;
         private static IDictionary<Type, IDictionary<string, object>> _enumTypeValueDictionary;
         private static ConcurrentDictionary<Type, Func<string, object>> _typeParseFuncDictionary;
-        private static HashSet<Type> _knownTypes;
+        private static HashSet<TypeInfo> _knownTypes;
 
         #endregion
         
@@ -36,18 +36,18 @@ namespace Lime.Protocol.Serialization
             _authenticationSchemeDictionary = new Dictionary<AuthenticationScheme, Type>();
             _enumTypeValueDictionary = new Dictionary<Type, IDictionary<string, object>>();
             _typeParseFuncDictionary = new ConcurrentDictionary<Type, Func<string, object>>();
-            _knownTypes = new HashSet<Type>();
+            _knownTypes = new HashSet<TypeInfo>();
             var assemblies = GetAllTypesFromApplication().Where(t => t.GetCustomAttributes<DataContractAttribute>() != null);
 
             // Caches the known type (types decorated with DataContract in all loaded assemblies)
             foreach (var knownType in assemblies)
             {
-                _knownTypes.Add(knownType.GetType());
+                _knownTypes.Add(knownType);
             }
 
             // Caches the documents (contents and resources)
             var documentTypes = _knownTypes
-                .Where(t => !t.GetTypeInfo().IsAbstract && typeof(Document).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()));
+                .Where(t => !t.IsAbstract && typeof(Document).GetTypeInfo().IsAssignableFrom(t));
 
             foreach (var documentType in documentTypes)
             {
