@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -139,7 +138,7 @@ namespace Lime.Protocol
                 TaskScheduler.Current)
                 .Unwrap();
         }
-
+#if !PCL
         /// <summary>
         /// Converts a SecureString to a regular, unsecure string.        
         /// </summary>
@@ -185,6 +184,7 @@ namespace Lime.Protocol
             return secureString;
         }
 
+#endif
         /// <summary>
         /// Creates a CancellationToken
         /// with the specified delay
@@ -195,33 +195,6 @@ namespace Lime.Protocol
         {
             var cts = new CancellationTokenSource(delay);
             return cts.Token;
-        }
-
-        /// <summary>
-        /// Gets the identity value from 
-        /// the certificate subject
-        /// </summary>
-        /// <param name="certificate"></param>
-        /// <returns></returns>
-        public static Identity GetIdentity(this X509Certificate2 certificate)
-        {
-            if (certificate == null)
-            {
-                throw new ArgumentNullException("certificate");
-            }            
-
-            var identityName = certificate.GetNameInfo(
-                X509NameType.SimpleName, 
-                false);
-
-            Identity identity = null;
-
-            if (!string.IsNullOrWhiteSpace(identityName))
-            {
-                Identity.TryParse(identityName, out identity);
-            }
-
-            return identity;
         }
 
         /// <summary>
@@ -266,7 +239,7 @@ namespace Lime.Protocol
             return values.Aggregate((a, b) => string.Format("{0},{1}", a, b)).TrimEnd(',');
         }
 
-        private static Regex formatRegex = new Regex(@"({)([^}]+)(})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static Regex formatRegex = new Regex(@"({)([^}]+)(})", RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Format the string using
@@ -306,7 +279,6 @@ namespace Lime.Protocol
 
             StringBuilder sb = new StringBuilder();
             Type type = source.GetType();
-
             MatchCollection mc = formatRegex.Matches(format);
             int startIndex = 0;
             foreach (Match m in mc)
@@ -329,7 +301,7 @@ namespace Lime.Protocol
                 }
 
                 //first try properties  
-                var retrievedProperty = type.GetProperty(toGet);
+                var retrievedProperty = type.GetRuntimeProperty(toGet);
                 Type retrievedType = null;
                 object retrievedObject = null;
                 if (retrievedProperty != null)
@@ -339,7 +311,7 @@ namespace Lime.Protocol
                 }
                 else //try fields  
                 {
-                    var retrievedField = type.GetField(toGet);
+                    var retrievedField = type.GetRuntimeField(toGet);
                     if (retrievedField != null)
                     {
                         retrievedType = retrievedField.FieldType;
@@ -350,19 +322,17 @@ namespace Lime.Protocol
                 if (retrievedType != null) //Cool, we found something  
                 {
                     string result = String.Empty;
-                    if (toFormat == String.Empty) //no format info  
-                    {
-                        result = retrievedType.InvokeMember("ToString",
-                            BindingFlags.Public | BindingFlags.NonPublic |
-                            BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.IgnoreCase
-                            , null, retrievedObject, null) as string;
+                    if (toFormat == String.Empty) {//no format info  
+                        var method = retrievedType.GetRuntimeMethod("ToString", new Type [] {});
+                        result =  method.Invoke(retrievedObject, null) as string;
+
                     }
                     else //format info  
                     {
-                        result = retrievedType.InvokeMember("ToString",
-                            BindingFlags.Public | BindingFlags.NonPublic |
-                            BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.IgnoreCase
-                            , null, retrievedObject, new object[] { toFormat, formatProvider }) as string;
+                        var formatType = formatProvider != null ? formatProvider.GetType() : null;
+                        var method = retrievedType.GetRuntimeMethod("ToString", new Type[] { toFormat.GetType(), formatType});
+                        result = method.Invoke(retrievedObject, new object[] { toFormat, formatProvider }) as string;
+                        result =  method.Invoke(retrievedObject, null) as string;
                     }
                     sb.Append(result);
                 }

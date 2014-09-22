@@ -37,18 +37,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="SimpleInjector">
-      <HintPath>..\..\..\..\packages\SimpleInjector.2.5.2\lib\net45\SimpleInjector.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleInjector.Diagnostics">
-      <HintPath>..\..\..\..\packages\SimpleInjector.2.5.2\lib\net45\SimpleInjector.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleInjector.Integration.Web">
-      <HintPath>..\..\..\..\packages\SimpleInjector.Integration.Web.2.5.2\lib\net40\SimpleInjector.Integration.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="SimpleInjector.Integration.Web.Mvc">
-      <HintPath>..\..\..\..\packages\SimpleInjector.Integration.Web.Mvc.2.5.2\lib\net40\SimpleInjector.Integration.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -69,6 +57,12 @@
   <ItemGroup>
     <None Include="Lime.Protocol.nuspec" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lime.Protocol.Pcl\Lime.Protocol.Pcl.csproj">
+      <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
+      <Name>Lime.Protocol.Pcl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Lime.Protocol\Lime.Protocol.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol\Lime.Protocol.projitems')" />
   <Import Project="..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems" Label="Shared" Condition="Exists('..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems')" />

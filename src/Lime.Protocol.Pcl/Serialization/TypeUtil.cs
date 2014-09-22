@@ -1,4 +1,5 @@
 ﻿using Lime.Protocol.Security;
+using Lime.Protocol.Pcl.Compatibility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -36,16 +37,17 @@ namespace Lime.Protocol.Serialization
             _enumTypeValueDictionary = new Dictionary<Type, IDictionary<string, object>>();
             _typeParseFuncDictionary = new ConcurrentDictionary<Type, Func<string, object>>();
             _knownTypes = new HashSet<Type>();
+            var assemblies = GetAllTypesFromApplication().Where(t => t.GetCustomAttributes<DataContractAttribute>() != null);
 
             // Caches the known type (types decorated with DataContract in all loaded assemblies)
-            foreach (var knownType in GetAllTypesFromApplication().Where(t => t.GetCustomAttribute<DataContractAttribute>() != null))
+            foreach (var knownType in assemblies)
             {
-                _knownTypes.Add(knownType);
+                _knownTypes.Add(knownType.GetType());
             }
 
             // Caches the documents (contents and resources)
             var documentTypes = _knownTypes
-                .Where(t => !t.IsAbstract && typeof(Document).IsAssignableFrom(t));
+                .Where(t => !t.GetTypeInfo().IsAbstract && typeof(Document).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()));
 
             foreach (var documentType in documentTypes)
             {
@@ -59,7 +61,7 @@ namespace Lime.Protocol.Serialization
 
             // Caches the Authentication schemes
             var authenticationTypes = _knownTypes
-                .Where(t => !t.IsAbstract && typeof(Authentication).IsAssignableFrom(t));
+                .Where(t => !t.GetTypeInfo().IsAbstract && typeof(Authentication).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()));
 
             foreach (var authenticationType in authenticationTypes)
             {
@@ -73,7 +75,7 @@ namespace Lime.Protocol.Serialization
 
             // Caches the enums
             var enumTypes = _knownTypes
-                .Where(t => t.IsEnum);
+                .Where(t => t.GetTypeInfo().IsEnum);
 
             foreach (var enumType in enumTypes)
             {
@@ -102,7 +104,7 @@ namespace Lime.Protocol.Serialization
             var type = typeof(T);
 
             var parseMethod = typeof(T)
-                .GetMethod("Parse", BindingFlags.Static | BindingFlags.Public, null, new[] { typeof(string) }, null);
+                .GetRuntimeMethod("Parse",  new[] { typeof(string) });
 
             if (parseMethod == null)
             {
@@ -116,7 +118,7 @@ namespace Lime.Protocol.Serialization
 
             var parseFuncType = typeof(Func<,>).MakeGenericType(typeof(string), type);
 
-            return (Func<string, T>)Delegate.CreateDelegate(parseFuncType, parseMethod);
+            return (Func<string, T>)parseMethod.CreateDelegate(parseFuncType);
         }
 
         /// <summary>
@@ -140,13 +142,13 @@ namespace Lime.Protocol.Serialization
                 try
                 {
                     var getParseFuncMethod = typeof(TypeUtil)
-                        .GetMethod("GetParseFunc", BindingFlags.Static | BindingFlags.Public)
+                        .GetRuntimeMethod("GetParseFunc", new Type[] { })
                         .MakeGenericMethod(type);
 
                     var genericGetParseFunc = getParseFuncMethod.Invoke(null, null);
 
                     var parseFuncAdapterMethod = typeof(TypeUtil)
-                        .GetMethod("ParseFuncAdapter", BindingFlags.Static | BindingFlags.NonPublic)
+                        .GetRuntimeMethod("ParseFuncAdapter", new Type[] { })
                         .MakeGenericMethod(type);
 
                     parseFunc = (Func<string, object>)parseFuncAdapterMethod.Invoke(null, new[] { genericGetParseFunc });
@@ -187,10 +189,10 @@ namespace Lime.Protocol.Serialization
                 throw new ArgumentNullException("type");
             }
 
-            if (type.IsGenericType &&
+            if (type.GetTypeInfo().IsGenericType &&
                 type.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                type = type.GetGenericArguments()[0];
+                type = type.GenericTypeArguments[0];
             }
 
             if (type == typeof(string))
@@ -224,7 +226,7 @@ namespace Lime.Protocol.Serialization
                 result = resultArray;
                 return true;
             }
-            else if (type.IsEnum)
+            else if (type.GetTypeInfo().IsEnum)
             {
                 try
                 {
@@ -377,7 +379,7 @@ namespace Lime.Protocol.Serialization
         /// <returns></returns>
         public static Func<object, object> BuildGetAccessor(PropertyInfo propertyInfo)
         {
-            return BuildGetAccessor(propertyInfo.GetGetMethod());
+            return BuildGetAccessor(propertyInfo.GetMethod);
         }
 
         /// <summary>
@@ -419,7 +421,7 @@ namespace Lime.Protocol.Serialization
         /// <returns></returns>
         public static Action<object, object> BuildSetAccessor(PropertyInfo propertyInfo)
         {
-            return BuildSetAccessor(propertyInfo.GetSetMethod());
+            return BuildSetAccessor(propertyInfo.SetMethod);
         }
 
         /// <summary>
@@ -469,13 +471,13 @@ namespace Lime.Protocol.Serialization
             return Activator.CreateInstance(type);
         }
 
-        private static IEnumerable<Type> GetAllTypesFromApplication()
+        private static IEnumerable<TypeInfo> GetAllTypesFromApplication()
         {
-            return AppDomain
-                    .CurrentDomain
-                    .GetAssemblies()
-                    .SelectMany(a => a.GetTypes())
+            return AppDomainWrapper.Instance.GetAssemblies()
+                    .SelectMany(a => a.DefinedTypes)
                     .Where(t => !t.FullName.StartsWith("System."));
         }
+
+       
     }
 }

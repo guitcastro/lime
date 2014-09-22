@@ -7,6 +7,7 @@ using Lime.Protocol;
 using Lime.Protocol.Network;
 using Lime.Protocol.Serialization;
 using Lime.Protocol.Tcp;
+using Lime.Client.TestConsole.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

@@ -48,13 +48,9 @@ namespace Lime.Protocol.Tcp.UnitTests
 
         private TcpTransport GetTarget(X509Certificate2 certificate = null, int bufferSize = TcpTransport.DEFAULT_BUFFER_SIZE)
         {
-            return new TcpTransport(
-                _tcpClient.Object,
-                _envelopeSerializer.Object,
-                certificate,
-                bufferSize,
-                _traceWriter.Object);
+            return  new TcpTransport(_tcpClient.Object, _envelopeSerializer.Object, null, certificate, bufferSize, _traceWriter.Object);
         }
+
         private async Task<TcpTransport> GetTargetAndOpenAsync(int bufferSize = TcpTransport.DEFAULT_BUFFER_SIZE, Stream stream = null)
         {
             if (stream == null)

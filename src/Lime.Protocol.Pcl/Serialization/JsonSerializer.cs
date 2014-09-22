@@ -33,7 +33,7 @@ namespace Lime.Protocol.Serialization
             var type = typeof(T);
 
             var properties = type
-                .GetProperties()
+                .GetRuntimeProperties()
                 .Where(p => p.GetCustomAttribute<DataMemberAttribute>() != null)
                 .ToArray();
 
@@ -60,14 +60,14 @@ namespace Lime.Protocol.Serialization
                 var propertyType = property.PropertyType;
 
                 // Serialization
-                var getMethod = property.GetGetMethod();
+                var getMethod = property.GetMethod;
                 if (getMethod != null)
                 {
                     _serializePropertyActions[i] = GetPropertySerializationAction(propertyType, getMethod, memberName, defaultValue, emitDefaultValue);
                 }
 
                 // Deserialization                
-                var setMethod = property.GetSetMethod();
+                var setMethod = property.SetMethod;
                 if (setMethod != null)
                 {
                     _deserializePropertyActions[i] = GetPropertyDeserializationAction(propertyType, setMethod, memberName, defaultValue);
@@ -96,7 +96,7 @@ namespace Lime.Protocol.Serialization
                     }
                 };
             }
-            else if (typeof(Document).IsAssignableFrom(propertyType))
+            else if (typeof(Document).GetTypeInfo().IsAssignableFrom(propertyType.GetTypeInfo()))
             {
                 serializePropertyAction = (v, w) =>
                 {
@@ -139,10 +139,10 @@ namespace Lime.Protocol.Serialization
             Action<T, JsonObject> deserializePropertyAction = null;
             var isNullable = false;
 
-            if (propertyType.IsGenericType &&
+            if (propertyType.GetTypeInfo().IsGenericType &&
                 propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
             {
-                propertyType = propertyType.GetGenericArguments().First();
+                propertyType = propertyType.GenericTypeArguments.First();
                 isNullable = true;
             };
 
@@ -161,7 +161,7 @@ namespace Lime.Protocol.Serialization
                         }
                     };
                 }
-                else if (propertyType.IsEnum)
+                else if (propertyType.GetTypeInfo().IsEnum)
                 {
                     deserializePropertyAction = (v, j) =>
                     {
@@ -172,7 +172,7 @@ namespace Lime.Protocol.Serialization
                         }
                     };
                 }
-                else if (propertyType.IsAbstract)
+                else if (propertyType.GetTypeInfo().IsAbstract)
                 {
                     if (propertyType == typeof(Document))
                     {
@@ -246,7 +246,7 @@ namespace Lime.Protocol.Serialization
                     }
                 }
             }
-            else if (propertyType.IsEnum)
+            else if (propertyType.GetTypeInfo().IsEnum)
             {
                 deserializePropertyAction = (v, j) =>
                 {
@@ -301,7 +301,7 @@ namespace Lime.Protocol.Serialization
                     }
                 };
             }
-            else if (typeof(IDictionary<string, string>).IsAssignableFrom(propertyType))
+            else if (typeof(IDictionary<string, string>).GetTypeInfo().IsAssignableFrom(propertyType.GetTypeInfo()))
             {
                 // Metadata property
                 deserializePropertyAction = (v, j) =>
@@ -313,7 +313,7 @@ namespace Lime.Protocol.Serialization
                     }
                 };
             }
-            else if (propertyType.IsAbstract)
+            else if (propertyType.GetTypeInfo().IsAbstract)
             {
                 if (propertyType == typeof(Document))
                 {
@@ -646,10 +646,10 @@ namespace Lime.Protocol.Serialization
             {
                 var serializer = typeof(JsonSerializer<>).MakeGenericType(type);
                 var serializeFuncType = typeof(Func<,>).MakeGenericType(type, typeof(string));
-                var method = serializer.GetMethod("Serialize", BindingFlags.Static | BindingFlags.Public);
-                var genericSerializeFunc = Delegate.CreateDelegate(serializeFuncType, method);
+                var method = serializer.GetRuntimeMethod("Serialize", new Type [] { });
+                var genericSerializeFunc = method.CreateDelegate(serializeFuncType);
                 var serializeFuncAdapterMethod = typeof(JsonSerializer)
-                    .GetMethod("SerializeFuncAdapter", BindingFlags.Static | BindingFlags.NonPublic)
+                    .GetRuntimeMethod("SerializeFuncAdapter", new Type[] { })
                     .MakeGenericMethod(type);
 
                 try
@@ -687,10 +687,10 @@ namespace Lime.Protocol.Serialization
             {
                 var serializer = typeof(JsonSerializer<>).MakeGenericType(type);
                 var writeActionType = typeof(Action<,>).MakeGenericType(type, typeof(IJsonWriter));
-                var method = serializer.GetMethod("Write", BindingFlags.Static | BindingFlags.Public);
-                var genericWriteAction = Delegate.CreateDelegate(writeActionType, method);
+                var method = serializer.GetRuntimeMethod("Write", new Type [] {});
+                var genericWriteAction = method.CreateDelegate(writeActionType);
                 var writeFuncAdapterMethod = typeof(JsonSerializer)
-                    .GetMethod("WriteFuncAdapter", BindingFlags.Static | BindingFlags.NonPublic)
+                    .GetRuntimeMethod("WriteFuncAdapter", new Type[] { })
                     .MakeGenericMethod(type);
                 try
                 {
@@ -760,10 +760,10 @@ namespace Lime.Protocol.Serialization
             {                
                 var serializer = typeof(JsonSerializer<>).MakeGenericType(type);
                 var parseJsonFuncType = typeof(Func<,>).MakeGenericType(typeof(JsonObject), type);
-                var method = serializer.GetMethod("ParseJson", BindingFlags.Static | BindingFlags.Public);
-                var genericParseJsonFunc = Delegate.CreateDelegate(parseJsonFuncType, method);
+                var method = serializer.GetRuntimeMethod("ParseJson", new Type[] { });
+                var genericParseJsonFunc = method.CreateDelegate(parseJsonFuncType);
                 var parseJsonAdapterMethod = typeof(JsonSerializer)
-                    .GetMethod("ParseJsonFuncAdapter", BindingFlags.Static | BindingFlags.NonPublic)
+                    .GetRuntimeMethod("ParseJsonFuncAdapter", new Type[] { })
                     .MakeGenericMethod(type);
                 try
                 {

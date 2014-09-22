@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using Lime.Protocol.Pcl.Compatibility;
+using System.Reflection;
 
 namespace Lime.Client.Windows
 {
@@ -16,7 +18,16 @@ namespace Lime.Client.Windows
     {
         public App()
         {
-   
+            AppDomainWrapper.Instance = new AppDomainWrapperInstance(); 
         }
     }
+
+    class AppDomainWrapperInstance : IAppDomain
+    {
+        public IList<Assembly> GetAssemblies()
+        {
+            return System.AppDomain.CurrentDomain.GetAssemblies();
+        }
+    }   
+
 }

@@ -76,6 +76,8 @@
     <Compile Include="Network\ChannelBaseTests.cs" />
     <Compile Include="Network\TransportBaseTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DictionaryJsonWriter.cs" />
+    <Compile Include="Serialization\EnvelopeSerializer.cs" />
     <Compile Include="Serialization\EnvelopeSerializerTests.cs" />
     <Compile Include="Serialization\StringJsonExtensions.cs" />
     <Compile Include="Server\ServerChannelTests.cs" />
@@ -86,6 +88,12 @@
   <ItemGroup>
     <None Include="Lime.Protocol.UnitTests.snk" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Lime.Protocol.Pcl\Lime.Protocol.Pcl.csproj">
+      <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
+      <Name>Lime.Protocol.Pcl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

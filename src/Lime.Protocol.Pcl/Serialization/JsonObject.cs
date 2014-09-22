@@ -13,7 +13,7 @@ namespace Lime.Protocol.Serialization
     /// </summary>
     public sealed class JsonObject : Dictionary<string, object>
     {
-        private static Regex _unicodeRegex = new Regex(@"\\u([0-9a-z]{4})", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static Regex _unicodeRegex = new Regex(@"\\u([0-9a-z]{4})", RegexOptions.IgnoreCase);
 
         #region Constructor
 
