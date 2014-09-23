@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Shouldly;
+using Lime.Protocol.Pcl.Compatibility;
+using System.Reflection;
 
 namespace Lime.Protocol.UnitTests.Serialization
 {
@@ -19,6 +21,20 @@ namespace Lime.Protocol.UnitTests.Serialization
 		{
 			return new EnvelopeSerializer();
 		}
+
+        [TestInitialize]
+        public void Setup ()
+        { 
+           AppDomainWrapper.Instance = new AppDomainWrapperInstance(); 
+        }
+
+        class AppDomainWrapperInstance : IAppDomain
+        {
+            public IList<Assembly> GetAssemblies()
+            {
+                return System.AppDomain.CurrentDomain.GetAssemblies();
+            }
+        } 
 
 		#region Serialize
 

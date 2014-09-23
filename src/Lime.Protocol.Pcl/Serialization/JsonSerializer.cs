@@ -687,10 +687,10 @@ namespace Lime.Protocol.Serialization
             {
                 var serializer = typeof(JsonSerializer<>).MakeGenericType(type);
                 var writeActionType = typeof(Action<,>).MakeGenericType(type, typeof(IJsonWriter));
-                var method = serializer.GetRuntimeMethod("Write", new Type [] {});
+                var method = serializer.GetRuntimeMethod("Write", new Type[] { type , typeof(IJsonWriter) });
                 var genericWriteAction = method.CreateDelegate(writeActionType);
                 var writeFuncAdapterMethod = typeof(JsonSerializer)
-                    .GetRuntimeMethod("WriteFuncAdapter", new Type[] { })
+                    .GetRuntimeMethodsExt("WriteFuncAdapter", new Type[] { genericWriteAction.GetType() })
                     .MakeGenericMethod(type);
                 try
                 {
@@ -760,10 +760,10 @@ namespace Lime.Protocol.Serialization
             {                
                 var serializer = typeof(JsonSerializer<>).MakeGenericType(type);
                 var parseJsonFuncType = typeof(Func<,>).MakeGenericType(typeof(JsonObject), type);
-                var method = serializer.GetRuntimeMethod("ParseJson", new Type[] { });
+                var method = serializer.GetRuntimeMethod("ParseJson", new Type[] { typeof(JsonObject) });
                 var genericParseJsonFunc = method.CreateDelegate(parseJsonFuncType);
                 var parseJsonAdapterMethod = typeof(JsonSerializer)
-                    .GetRuntimeMethod("ParseJsonFuncAdapter", new Type[] { })
+                    .GetRuntimeMethodsExt("ParseJsonFuncAdapter", new Type[] { genericParseJsonFunc.GetType() })
                     .MakeGenericMethod(type);
                 try
                 {

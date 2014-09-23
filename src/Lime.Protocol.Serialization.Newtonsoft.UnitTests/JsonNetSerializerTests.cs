@@ -10,6 +10,8 @@ using Lime.Protocol.Resources;
 using System.Text;
 using Lime.Protocol.UnitTests;
 using Shouldly;
+using Lime.Protocol.Pcl.Compatibility;
+using System.Reflection;
 
 namespace Lime.Protocol.Serialization.Newtonsoft.UnitTests
 {
@@ -20,6 +22,20 @@ namespace Lime.Protocol.Serialization.Newtonsoft.UnitTests
         {
             return new JsonNetSerializer();
         }
+
+        [TestInitialize]
+        public void Setup()
+        {
+            AppDomainWrapper.Instance = new AppDomainWrapperInstance();
+        }
+
+        class AppDomainWrapperInstance : IAppDomain
+        {
+            public IList<Assembly> GetAssemblies()
+            {
+                return System.AppDomain.CurrentDomain.GetAssemblies();
+            }
+        } 
 
 
         #region Serialize

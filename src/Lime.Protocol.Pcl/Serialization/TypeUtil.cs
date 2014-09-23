@@ -1,4 +1,5 @@
 ﻿using Lime.Protocol.Security;
+using Lime.Protocol;
 using Lime.Protocol.Pcl.Compatibility;
 using System;
 using System.Collections.Concurrent;
@@ -37,7 +38,9 @@ namespace Lime.Protocol.Serialization
             _enumTypeValueDictionary = new Dictionary<Type, IDictionary<string, object>>();
             _typeParseFuncDictionary = new ConcurrentDictionary<Type, Func<string, object>>();
             _knownTypes = new HashSet<TypeInfo>();
-            var assemblies = GetAllTypesFromApplication().Where(t => t.GetCustomAttributes<DataContractAttribute>() != null);
+            var assemblies = GetAllTypesFromApplication().Where(
+                t => t.GetCustomAttributes<DataContractAttribute>() != null &&
+                t.GetCustomAttributes<DataContractAttribute>().Any());
 
             // Caches the known type (types decorated with DataContract in all loaded assemblies)
             foreach (var knownType in assemblies)
@@ -51,31 +54,34 @@ namespace Lime.Protocol.Serialization
 
             foreach (var documentType in documentTypes)
             {
-                var document = Activator.CreateInstance(documentType) as Document;
-
-                if (document != null)
+                try
                 {
-                    _documentMediaTypeDictionary.Add(document.GetMediaType(), documentType);
+                    var document = Activator.CreateInstance(documentType.AsType()) as Document;
+                    if (document != null)
+                    {
+                        _documentMediaTypeDictionary.Add(document.GetMediaType(), documentType.AsType());
+                    }
+                }
+                catch (Exception) {
                 }
             }
 
             // Caches the Authentication schemes
             var authenticationTypes = _knownTypes
-                .Where(t => !t.GetTypeInfo().IsAbstract && typeof(Authentication).GetTypeInfo().IsAssignableFrom(t.GetTypeInfo()));
+                .Where(t => !t.IsAbstract && typeof(Authentication).GetTypeInfo().IsAssignableFrom(t));
 
             foreach (var authenticationType in authenticationTypes)
             {
-                var authentication = Activator.CreateInstance(authenticationType) as Authentication;
+                var authentication = Activator.CreateInstance(authenticationType.AsType()) as Authentication;
 
                 if (authentication != null)
                 {
-                    _authenticationSchemeDictionary.Add(authentication.GetAuthenticationScheme(), authenticationType);
+                    _authenticationSchemeDictionary.Add(authentication.GetAuthenticationScheme(), authenticationType.AsType());
                 }
             }
 
             // Caches the enums
-            var enumTypes = _knownTypes
-                .Where(t => t.GetTypeInfo().IsEnum);
+            var enumTypes = _knownTypes.Where(t => t.IsEnum).Select<TypeInfo, Type>(a => a.AsType());
 
             foreach (var enumType in enumTypes)
             {
@@ -148,13 +154,13 @@ namespace Lime.Protocol.Serialization
                     var genericGetParseFunc = getParseFuncMethod.Invoke(null, null);
 
                     var parseFuncAdapterMethod = typeof(TypeUtil)
-                        .GetRuntimeMethod("ParseFuncAdapter", new Type[] { })
-                        .MakeGenericMethod(type);
+                        .GetRuntimeMethodsExt("ParseFuncAdapter", new Type[] { genericGetParseFunc.GetType() });
+                    parseFuncAdapterMethod = parseFuncAdapterMethod.MakeGenericMethod(type);
 
                     parseFunc = (Func<string, object>)parseFuncAdapterMethod.Invoke(null, new[] { genericGetParseFunc });
                     _typeParseFuncDictionary.TryAdd(type, parseFunc);
                 }
-                catch (TargetInvocationException ex)
+                catch (Exception ex)
                 {
                     throw ex.InnerException;
                 }
@@ -163,7 +169,7 @@ namespace Lime.Protocol.Serialization
             return parseFunc; 
         }
 
-        private static Func<string, object> ParseFuncAdapter<T>(Func<string, T> parseFunc)
+        public static Func<string, object> ParseFuncAdapter<T>(Func<string, T> parseFunc)
         {
             return (s) => (object)parseFunc(s);
         }
@@ -347,7 +353,7 @@ namespace Lime.Protocol.Serialization
         /// <returns></returns>
         public static bool IsKnownType(Type type)
         {
-            return _knownTypes.Contains(type);
+            return _knownTypes.Contains(type.GetTypeInfo());
         }
 
         /// <summary>
