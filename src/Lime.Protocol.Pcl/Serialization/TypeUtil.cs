@@ -1,6 +1,5 @@
 ﻿using Lime.Protocol.Security;
 using Lime.Protocol;
-using Lime.Protocol.Pcl.Compatibility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -94,6 +93,8 @@ namespace Lime.Protocol.Serialization
                 }
                 _enumTypeValueDictionary.Add(enumType, memberValueDictionary);
             }
+
+
         }
 
         #endregion
@@ -479,11 +480,16 @@ namespace Lime.Protocol.Serialization
 
         private static IEnumerable<TypeInfo> GetAllTypesFromApplication()
         {
-            return AppDomainWrapper.Instance.GetAssemblies()
-                    .SelectMany(a => a.DefinedTypes)
-                    .Where(t => !t.FullName.StartsWith("System."));
+            var currentdomain = typeof(string).GetTypeInfo().Assembly.GetType("System.AppDomain").GetRuntimeProperty("CurrentDomain").GetMethod.Invoke(null, new object[] { });
+            var getassemblies = currentdomain.GetType().GetRuntimeMethod("GetAssemblies", new Type[] { });
+            var assemblies = getassemblies.Invoke(currentdomain, new object[] { }) as Assembly[];
+            return assemblies.SelectMany(a => a.DefinedTypes)
+                .Where(t => !t.FullName.StartsWith("System."));
         }
 
+		public static int GetKnowTypesCount(){
+			return _knownTypes.Count;
+		}
        
     }
 }
