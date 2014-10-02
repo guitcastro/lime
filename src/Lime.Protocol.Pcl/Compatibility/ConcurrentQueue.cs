@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Lime.Protocol.Compatibility
 {
-    public class ConcurrentQueue<T>
+    public class ConcurrentQueue<T> : IEnumerable<T>
     {
         private readonly Queue<T> _queue;
 
@@ -74,6 +74,16 @@ namespace Lime.Protocol.Compatibility
             }
         }
 
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            return _queue.GetEnumerator();
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return _queue.GetEnumerator(); 
+        }
     }
 
 }

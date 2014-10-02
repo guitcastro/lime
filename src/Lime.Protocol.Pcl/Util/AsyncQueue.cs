@@ -132,7 +132,7 @@ namespace Lime.Protocol.Util
         /// </summary>
         public int PromisesCount
         {
-            get { return _promisesQueue.AsQueryable.Where(p => !p.Task.IsCanceled).Count(); }
+            get { return _promisesQueue.Where(p => !p.Task.IsCanceled).Count(); }
         }
 
         /// <summary>
