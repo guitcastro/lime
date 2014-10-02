@@ -352,15 +352,15 @@ namespace Lime.Protocol.Tcp
 
 							if (_serverCertificate != null)
 							{
-							#if MONO
+							#if __MonoCS__
 								// Server
 								sslStream = new SslStream(
 									_stream,
 									false,
 									new RemoteCertificateValidationCallback(ValidateClientCertificate),
 									null);
-							#else
 
+							#else
 								// Server
 								sslStream = new SslStream(
 									_stream,
