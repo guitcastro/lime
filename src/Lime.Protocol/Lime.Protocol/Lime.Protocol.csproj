@@ -8,8 +8,8 @@
     <ProjectGuid>{B02A7956-6FB9-44C8-9932-A0BC34CB8580}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lime.Protocol.Pcl</RootNamespace>
-    <AssemblyName>Lime.Protocol.Pcl</AssemblyName>
+    <RootNamespace>Lime.Protocol</RootNamespace>
+    <AssemblyName>Lime.Protocol</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

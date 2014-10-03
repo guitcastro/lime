@@ -59,9 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Lime.Protocol.Pcl\Lime.Protocol.Pcl.csproj">
+    <ProjectReference Include="..\Lime.Protocol\Lime.Protocol.csproj">
       <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
-      <Name>Lime.Protocol.Pcl</Name>
+      <Name>Lime.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Lime.Protocol\Lime.Protocol.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol\Lime.Protocol.projitems')" />
