@@ -352,23 +352,12 @@ namespace Lime.Protocol.Tcp
 
 							if (_serverCertificate != null)
 							{
-							#if __MonoCS__
 								// Server
 								sslStream = new SslStream(
 									_stream,
 									false,
 									new RemoteCertificateValidationCallback(ValidateClientCertificate),
 									null);
-
-							#else
-								// Server
-								sslStream = new SslStream(
-									_stream,
-									false,
-									new RemoteCertificateValidationCallback(ValidateClientCertificate),
-									null,
-									EncryptionPolicy.RequireEncryption);
-							#endif
 
 								await sslStream
 									.AuthenticateAsServerAsync(
