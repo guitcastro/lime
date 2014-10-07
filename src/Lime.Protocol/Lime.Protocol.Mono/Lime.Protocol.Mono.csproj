@@ -34,7 +34,5 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <Import Project="..\Lime.Protocol\Lime.Protocol.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol\Lime.Protocol.projitems')" />
-  <Import Project="..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems" Label="Shared" Condition="Exists('..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

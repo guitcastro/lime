@@ -37,15 +37,19 @@ namespace Lime.Protocol.Serialization
             _enumTypeValueDictionary = new Dictionary<Type, IDictionary<string, object>>();
             _typeParseFuncDictionary = new ConcurrentDictionary<Type, Func<string, object>>();
             _knownTypes = new HashSet<TypeInfo>();
-            var assemblies = GetAllTypesFromApplication().Where(
-                t => t.GetCustomAttributes<DataContractAttribute>() != null &&
-                t.GetCustomAttributes<DataContractAttribute>().Any());
+			var allAssemblies = GetAllTypesFromApplication ();
+			var assemblies = allAssemblies.Where(
+				t => {
+					return t.GetCustomAttributes<DataContractAttribute>() != null &&
+						t.GetCustomAttributes<DataContractAttribute>().Any();
+				});
 
-            // Caches the known type (types decorated with DataContract in all loaded assemblies)
-            foreach (var knownType in assemblies)
-            {
-                _knownTypes.Add(knownType);
-            }
+
+			// Caches the known type (types decorated with DataContract in all loaded assemblies)
+			foreach (var knownType in assemblies)
+			{
+				_knownTypes.Add(knownType);
+			}
 
             // Caches the documents (contents and resources)
             var documentTypes = _knownTypes
@@ -483,12 +487,19 @@ namespace Lime.Protocol.Serialization
             var currentdomain = typeof(string).GetTypeInfo().Assembly.GetType("System.AppDomain").GetRuntimeProperty("CurrentDomain").GetMethod.Invoke(null, new object[] { });
             var getassemblies = currentdomain.GetType().GetRuntimeMethod("GetAssemblies", new Type[] { });
             var assemblies = getassemblies.Invoke(currentdomain, new object[] { }) as Assembly[];
-            return assemblies.SelectMany(a => a.DefinedTypes)
-                .Where(t => !t.FullName.StartsWith("System."));
+			assemblies = assemblies.Where(t => !t.FullName.StartsWith("System.") &&
+				!t.FullName.StartsWith("Mono.") &&
+				!t.FullName.StartsWith("nunit.") &&
+				!t.FullName.StartsWith("NUnitRunner") &&
+				!t.FullName.StartsWith("MonoDevelop") &&
+				!t.FullName.StartsWith("mscorlib") 
+			).ToArray();
+			return assemblies.SelectMany(a => a.DefinedTypes);
+
         }
 
 		public static int GetKnowTypesCount(){
-			return _knownTypes.Count;
+			return _knownTypes.Count; 
 		}
        
     }

@@ -23,8 +23,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -36,7 +34,6 @@
     <DocumentationFile>bin\Release\Lime.Protocol.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -49,6 +46,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.Web.Infrastructure" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contents\BitmapImage.cs" />
@@ -60,12 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol.csproj">
-      <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
+      <Project>{B02A7956-6FB9-44C8-9932-A0BC34CB8580}</Project>
       <Name>Lime.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Lime.Protocol\Lime.Protocol.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol\Lime.Protocol.projitems')" />
-  <Import Project="..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems" Label="Shared" Condition="Exists('..\..\Lime.Protocol.Contract\Lime.Protocol.Contract.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,5 +1,4 @@
 ﻿using Lime.Protocol.Network;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Shouldly;
+using NUnit.Framework;
 
 namespace Lime.Protocol.UnitTests.Network
 {
-    [TestClass]
+    [TestFixture]
     public class ChannelBaseTests
     {
         #region Private fields
@@ -46,8 +46,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region SendMessageAsync
 
-        [TestMethod]
-        [TestCategory("SendMessageAsync")]
+        [Test]
+        [Category("SendMessageAsync")]
         public async Task SendMessageAsync_EstablishedState_CallsTransport()
         {
             var target = GetTarget(SessionState.Established);
@@ -68,8 +68,8 @@ namespace Lime.Protocol.UnitTests.Network
                     Times.Once());
         }
 
-        [TestMethod]
-        [TestCategory("SendMessageAsync")]
+        [Test]
+        [Category("SendMessageAsync")]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SendMessageAsync_NullMessage_ThrowsArgumentNullException()
         {
@@ -80,8 +80,8 @@ namespace Lime.Protocol.UnitTests.Network
             await target.SendMessageAsync(message);
         }
 
-        [TestMethod]
-        [TestCategory("SendMessageAsync")]
+        [Test]
+        [Category("SendMessageAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task SendMessageAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -97,8 +97,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region ReceiveMessageAsync
 
-        [TestMethod]
-        [TestCategory("ReceiveMessageAsync")]
+        [Test]
+        [Category("ReceiveMessageAsync")]
         public async Task ReceiveMessageAsync_EstablishedState_ReadsTransport()
         {            
             var content = DataUtil.CreateTextContent();
@@ -120,8 +120,8 @@ namespace Lime.Protocol.UnitTests.Network
             _transport.Verify();
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveMessageAsync")]
+        [Test]
+        [Category("ReceiveMessageAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ReceiveMessageAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -139,8 +139,8 @@ namespace Lime.Protocol.UnitTests.Network
             var actual = await target.ReceiveMessageAsync(cancellationToken);
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveMessageAsync")]
+        [Test]
+        [Category("ReceiveMessageAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReceiveMessageAsync_LimitedBuffers_ThrowsInvalidOperationException()
         {
@@ -165,8 +165,8 @@ namespace Lime.Protocol.UnitTests.Network
             var receiveMessageTask = target.ReceiveMessageAsync(cancellationToken);            
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveMessageAsync")]
+        [Test]
+        [Category("ReceiveMessageAsync")]
         public async Task ReceiveMessageAsync_NoRecipients_FillsFromTheSession()
         {
             var remoteNode = DataUtil.CreateNode();
@@ -202,8 +202,8 @@ namespace Lime.Protocol.UnitTests.Network
         }
 
 
-        [TestMethod]
-        [TestCategory("ReceiveMessageAsync")]
+        [Test]
+        [Category("ReceiveMessageAsync")]
         public async Task ReceiveMessageAsync_IncompleteRecipients_FillsFromTheSession()
         {
             var remoteNode = DataUtil.CreateNode();
@@ -248,8 +248,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region SendCommandAsync
 
-        [TestMethod]
-        [TestCategory("SendCommandAsync")]
+        [Test]
+        [Category("SendCommandAsync")]
         public async Task SendCommandAsync_EstablishedState_CallsTransport()
         {
             var target = GetTarget(SessionState.Established);
@@ -269,8 +269,8 @@ namespace Lime.Protocol.UnitTests.Network
                     Times.Once());
         }
 
-        [TestMethod]
-        [TestCategory("SendCommandAsync")]
+        [Test]
+        [Category("SendCommandAsync")]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SendCommandAsync_NullCommand_ThrowsArgumentNullException()
         {
@@ -281,8 +281,8 @@ namespace Lime.Protocol.UnitTests.Network
             await target.SendCommandAsync(command);
         }
 
-        [TestMethod]
-        [TestCategory("SendCommandAsync")]
+        [Test]
+        [Category("SendCommandAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task SendCommandAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -298,8 +298,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region ReceiveCommandAsync
 
-        [TestMethod]
-        [TestCategory("ReceiveCommandAsync")]
+        [Test]
+        [Category("ReceiveCommandAsync")]
         public async Task ReceiveCommandAsync_EstablishedState_ReadsTransport()
         {            
             var content = DataUtil.CreateTextContent();
@@ -320,8 +320,8 @@ namespace Lime.Protocol.UnitTests.Network
             _transport.Verify();
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveCommandAsync")]
+        [Test]
+        [Category("ReceiveCommandAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ReceiveCommandAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -339,8 +339,8 @@ namespace Lime.Protocol.UnitTests.Network
             var actual = await target.ReceiveCommandAsync(cancellationToken);
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveCommandAsync")]
+        [Test]
+        [Category("ReceiveCommandAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReceiveCommandAsync_LimitedBuffers_ThrowsInvalidOperationException()
         {
@@ -369,8 +369,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region SendNotificationAsync
         
-        [TestMethod]
-        [TestCategory("SendNotificationAsync")]
+        [Test]
+        [Category("SendNotificationAsync")]
         public async Task SendNotificationAsync_EstablishedState_CallsTransport()
         {
             var target = GetTarget(SessionState.Established);
@@ -389,8 +389,8 @@ namespace Lime.Protocol.UnitTests.Network
                     Times.Once());
         }
 
-        [TestMethod]
-        [TestCategory("SendNotificationAsync")]
+        [Test]
+        [Category("SendNotificationAsync")]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SendNotificationAsync_NullNotification_ThrowsArgumentNullException()
         {
@@ -401,8 +401,8 @@ namespace Lime.Protocol.UnitTests.Network
             await target.SendNotificationAsync(notification);
         }
 
-        [TestMethod]
-        [TestCategory("SendNotificationAsync")]
+        [Test]
+        [Category("SendNotificationAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task SendNotificationAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -417,8 +417,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region ReceiveNotificationAsync
 
-        [TestMethod]
-        [TestCategory("ReceiveNotificationAsync")]
+        [Test]
+        [Category("ReceiveNotificationAsync")]
         public async Task ReceiveNotificationAsync_EstablishedState_ReadsTransport()
         {
 
@@ -440,8 +440,8 @@ namespace Lime.Protocol.UnitTests.Network
             _transport.Verify();
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveNotificationAsync")]
+        [Test]
+        [Category("ReceiveNotificationAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ReceiveNotificationAsync_NewState_ThrowsInvalidOperationException()
         {
@@ -458,8 +458,8 @@ namespace Lime.Protocol.UnitTests.Network
             var actual = await target.ReceiveNotificationAsync(cancellationToken);
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveNotificationAsync")]
+        [Test]
+        [Category("ReceiveNotificationAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public void ReceiveNotificationAsync_LimitedBuffers_ThrowsInvalidOperationException()
         {
@@ -488,8 +488,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region SendSessionAsync
 
-        [TestMethod]
-        [TestCategory("SendSessionAsync")]
+        [Test]
+        [Category("SendSessionAsync")]
         public async Task SendSessionAsync_EstablishedState_CallsTransport()
         {
             var target = (ISessionChannel)GetTarget(SessionState.Established);
@@ -508,8 +508,8 @@ namespace Lime.Protocol.UnitTests.Network
                     Times.Once());
         }
 
-        [TestMethod]
-        [TestCategory("SendSessionAsync")]
+        [Test]
+        [Category("SendSessionAsync")]
         [ExpectedException(typeof(ArgumentNullException))]
         public async Task SendSessionAsync_NullSession_ThrowsArgumentNullException()
         {
@@ -524,8 +524,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region ReceiveSessionAsync
 
-        [TestMethod]
-        [TestCategory("ReceiveSessionAsync")]
+        [Test]
+        [Category("ReceiveSessionAsync")]
         public async Task ReceiveSessionAsync_EstablishedState_ReadsTransport()
         {           
             var session = DataUtil.CreateSession();
@@ -545,8 +545,8 @@ namespace Lime.Protocol.UnitTests.Network
             _transport.Verify();
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveSessionAsync")]
+        [Test]
+        [Category("ReceiveSessionAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ReceiveSessionAsync_FinishedState_ThrowsInvalidOperationException()
         {
@@ -563,8 +563,8 @@ namespace Lime.Protocol.UnitTests.Network
             var actual = await target.ReceiveSessionAsync(cancellationToken);
         }
 
-        [TestMethod]
-        [TestCategory("ReceiveSessionAsync")]
+        [Test]
+        [Category("ReceiveSessionAsync")]
         [ExpectedException(typeof(InvalidOperationException))]
         public async Task ReceiveSessionAsync_LimitedBuffers_ThrowsInvalidOperationException()
         {
@@ -588,8 +588,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region EnvelopeAsyncBuffer_PromiseAdded
 
-        [TestMethod]
-        [TestCategory("EnvelopeAsyncBuffer_PromiseAdded")]
+        [Test]
+        [Category("EnvelopeAsyncBuffer_PromiseAdded")]
         public void EnvelopeAsyncBuffer_PromiseAdded_TransportThrowsException_CallsTransportCloseAsyncAndThrowsException()
         {
             var exception = DataUtil.CreateException<InvalidOperationException>();
@@ -621,8 +621,8 @@ namespace Lime.Protocol.UnitTests.Network
             }
         }
 
-        [TestMethod]
-        [TestCategory("EnvelopeAsyncBuffer_PromiseAdded")]
+        [Test]
+        [Category("EnvelopeAsyncBuffer_PromiseAdded")]
         public void EnvelopeAsyncBuffer_PromiseAdded_BufferHasPromises_ConsumersFromTransport()
         {
             var cancellationToken = DataUtil.CreateCancellationToken();
@@ -669,8 +669,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         }
 
-        [TestMethod]
-        [TestCategory("EnvelopeAsyncBuffer_PromiseAdded")]
+        [Test]
+        [Category("EnvelopeAsyncBuffer_PromiseAdded")]
         public void EnvelopeAsyncBuffer_PromiseAdded_BufferHasPromises_ConsumersFromTransportInverted()
         {
             var cancellationToken = DataUtil.CreateCancellationToken();
@@ -719,8 +719,8 @@ namespace Lime.Protocol.UnitTests.Network
 
         #region Dispose
 
-        [TestMethod]
-        [TestCategory("Dispose")]
+        [Test]
+        [Category("Dispose")]
         [ExpectedException(typeof(TaskCanceledException))]
         public async Task Dispose_ReceiveMessageCalled_ThrowsTaskCancelledException()
         {
@@ -745,8 +745,8 @@ namespace Lime.Protocol.UnitTests.Network
             await receiveMessageTask;
         }
 
-        [TestMethod]
-        [TestCategory("Dispose")]
+        [Test]
+        [Category("Dispose")]
         [ExpectedException(typeof(TaskCanceledException))]
         public async Task Dispose_ReceiveCommandCalled_ThrowsTaskCancelledException()
         {
@@ -771,8 +771,8 @@ namespace Lime.Protocol.UnitTests.Network
             await receiveCommandTask;
         }
 
-        [TestMethod]
-        [TestCategory("Dispose")]
+        [Test]
+        [Category("Dispose")]
         [ExpectedException(typeof(TaskCanceledException))]
         public async Task Dispose_ReceiveNotificationCalled_ThrowsTaskCancelledException()
         {
@@ -797,8 +797,8 @@ namespace Lime.Protocol.UnitTests.Network
             await receiveNotificationTask;
         }
 
-        [TestMethod]
-        [TestCategory("Dispose")]
+        [Test]
+        [Category("Dispose")]
         [ExpectedException(typeof(TaskCanceledException))]
         public async Task Dispose_ReceiveSessionCalled_ThrowsTaskCancelledException()
         {

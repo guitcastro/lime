@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,6 @@
     <AssemblyName>Lime.Protocol.Tcp.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
@@ -64,15 +63,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Lime.Protocol.Tcp\Lime.Protocol.Tcp.csproj">
-      <Project>{b1ac973c-5f13-416d-8323-a6da9daa34c4}</Project>
+      <Project>{B1AC973C-5F13-416D-8323-A6DA9DAA34C4}</Project>
       <Name>Lime.Protocol.Tcp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol.Net45\Lime.Protocol.Net45.csproj">
-      <Project>{0cfee3a4-f914-4c45-be13-a344c9cfa134}</Project>
+      <Project>{0CFEE3A4-F914-4C45-BE13-A344C9CFA134}</Project>
       <Name>Lime.Protocol.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol\Lime.Protocol.csproj">
-      <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
+      <Project>{B02A7956-6FB9-44C8-9932-A0BC34CB8580}</Project>
       <Name>Lime.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
@@ -97,7 +96,6 @@
       </ItemGroup>
     </When>
   </Choose>
-  <Import Project="..\Lime.Protocol.Tcp\Lime.Protocol.Tcp\Lime.Protocol.Tcp.projitems" Label="Shared" Condition="Exists('..\Lime.Protocol.Tcp\Lime.Protocol.Tcp\Lime.Protocol.Tcp.projitems')" />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

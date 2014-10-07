@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,15 +40,14 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.5.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.20\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Threading.Tasks.Dataflow">
+      <HintPath>..\packages\Microsoft.Tpl.Dataflow.4.5.20\lib\portable-net45+win8+wpa81\System.Threading.Tasks.Dataflow.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleClient.cs" />
@@ -66,20 +65,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lime.Protocol.Serialization.Newtonsoft\Lime.Protocol.Serialization.Newtonsoft.csproj">
-      <Project>{07ef6707-b284-4068-9b2f-48998782bc9f}</Project>
-      <Name>Lime.Protocol.Serialization.Newtonsoft</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol.Tcp\Lime.Protocol.Tcp.csproj">
-      <Project>{b1ac973c-5f13-416d-8323-a6da9daa34c4}</Project>
+      <Project>{B1AC973C-5F13-416D-8323-A6DA9DAA34C4}</Project>
       <Name>Lime.Protocol.Tcp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol.Net45\Lime.Protocol.Net45.csproj">
-      <Project>{0cfee3a4-f914-4c45-be13-a344c9cfa134}</Project>
+      <Project>{0CFEE3A4-F914-4C45-BE13-A344C9CFA134}</Project>
       <Name>Lime.Protocol.Net45</Name>
     </ProjectReference>
     <ProjectReference Include="..\Lime.Protocol\Lime.Protocol\Lime.Protocol.csproj">
-      <Project>{b02a7956-6fb9-44c8-9932-a0bc34cb8580}</Project>
+      <Project>{B02A7956-6FB9-44C8-9932-A0BC34CB8580}</Project>
       <Name>Lime.Protocol</Name>
     </ProjectReference>
   </ItemGroup>
